@@ -11,7 +11,7 @@ The GitHub API responds to HTTP requests with JSON messages. In order, the XProc
 
 ## Authentification
 
-The GitHub API limits the number of requests to 60 requests per day. To bypass this limit, you have to generate an access token in your GitHub settings. You can pass this token with the equally named option `tolken`.
+The GitHub API limits the number of requests to 60 requests per day. To bypass this limit, you have to generate an access token in your GitHub settings. You can pass this token with the equally named option `token`.
 
 ## Steps
 
