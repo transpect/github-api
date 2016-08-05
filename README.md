@@ -3,7 +3,7 @@ XProc steps that implement the GitHub API
 
 ## Description
 
-Currently there exist two XProc steps for requesting the GitHub API. They use XProc's `p:http-request` to access the GitHub API. 
+Currently there exist two XProc steps for requesting the GitHub API. They use primarily XProc's `p:http-request` and rely on the capability of the XProc processor to expose JSON as XML internally. 
 
 ## Dependencies
 
