@@ -23,7 +23,7 @@ The GitHub API limits the number of requests to 60 requests per day. To bypass t
 
 `username`: name of the user or organization
 
-`group`: Belongs the username to a regular user or to an organization? The following values are permitted: 'users' and 'orgs'
+`group`: Belongs the username to a regular user or to an organization? The following values are permitted: `users` and `orgs`
 
 ### tr:repo-directory-list
 
