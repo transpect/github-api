@@ -3,8 +3,8 @@
   xmlns:c="http://www.w3.org/ns/xproc-step" 
   xmlns:tr="http://transpect.io"
   version="1.0" 
-  name="get-repos" 
-  type="tr:get-repos">
+  name="list-repos" 
+  type="tr:list-repos">
   
   <p:documentation>
     This step provides all repositories either for 
@@ -37,23 +37,42 @@
     </p:documentation>
   </p:option>
   
-  <p:template>
-    <p:input port="source">
-      <p:empty/>
-    </p:input>
-    <p:input port="template">
-      <p:inline>
-        <c:request href="https://api.github.com/{$group}/{$username}/repos?per_page=200"
-          method="get"
-          detailed="false">
-          <c:header name="Authorization" value="token {$token}"/>
-        </c:request>
-      </p:inline>
-    </p:input>
-    <p:with-param name="token" select="$token"/>
-    <p:with-param name="username" select="$username"/>
-    <p:with-param name="group" select="$group"/>
-  </p:template>
+  <p:choose>
+    <p:when test="$group = ('orgs', 'users')">
+  
+      <p:template>
+        <p:input port="source">
+          <p:empty/>
+        </p:input>
+        <p:input port="template">
+          <p:inline>
+            <c:request href="https://api.github.com/{$group}/{$username}/repos?per_page=200"
+              method="get"
+              detailed="false">
+              <c:header name="Authorization" value="token {$token}"/>
+            </c:request>
+          </p:inline>
+        </p:input>
+        <p:with-param name="token" select="$token"/>
+        <p:with-param name="username" select="$username"/>
+        <p:with-param name="group" select="$group"/>
+      </p:template>
+  
+    </p:when>
+    <p:otherwise>
+      <p:error code="wrong-group-option-value">
+        <p:input port="source">
+          <p:inline>
+            <c:error code="wrong-group-option-value">
+              Only the values 'orgs' and 'users' are permitted values for the option 'group'.
+            </c:error>
+          </p:inline>
+        </p:input>
+      </p:error>
+    </p:otherwise>
+  </p:choose>
+  
+  
   
   <p:http-request/>
   
