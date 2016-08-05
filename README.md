@@ -15,15 +15,17 @@ The GitHub API limits the number of requests to 60 requests per day. To bypass t
 
 ## Steps
 
-### tr:get-repos-from-org
+### tr:list-repos
 
 #### options 
 
 `token`: GitHub access token
 
-`orgname`: name of the organization
+`username`: name of the user or organization
 
-### tr:recursive-repo-listing
+`group`: Belongs the username to a regular user or to an organization? The following values are permitted: 'users' and 'orgs'
+
+### tr:repo-directory-list
 
 #### options 
 
