@@ -4,8 +4,8 @@
   xmlns:cx="http://xmlcalabash.com/ns/extensions"
   xmlns:j="http://marklogic.com/json"
   xmlns:tr="http://transpect.io"
-  name="recursive-repo-listing"
-  type="tr:recursive-repo-listing"
+  name="repo-directory-list"
+  type="tr:repo-directory-list"
   version="1.0">
   
   <p:documentation>
@@ -63,10 +63,10 @@
   
   <p:viewport match="/j:json/j:item[j:type eq 'dir']" name="viewport">
     
-    <tr:recursive-repo-listing name="recursive-repo-listing2">
+    <tr:repo-directory-list name="recursive-repo-listing2">
       <p:with-option name="token" select="$token"/>
       <p:with-option name="contents-url" select="concat($contents-url, '/', j:item/j:name)"/>      
-    </tr:recursive-repo-listing>
+    </tr:repo-directory-list>
     
     <p:insert cx:depends-on="recursive-repo-listing2" match="j:item" position="last-child">
       <p:input port="source">
