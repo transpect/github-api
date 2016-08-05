@@ -17,6 +17,10 @@ The GitHub API limits the number of requests to 60 requests per day. To bypass t
 
 ### tr:list-repos
 
+#### output ports
+
+`result`: provides the repositories and their metadata as transparentJSON XML document.
+
 #### options 
 
 `token`: GitHub access token
@@ -26,6 +30,10 @@ The GitHub API limits the number of requests to 60 requests per day. To bypass t
 `group`: Belongs the username to a regular user or to an organization? The following values are permitted: `users` and `orgs`
 
 ### tr:repo-directory-list
+
+#### output ports
+
+`result`: provides the directories and files below the submitted contents URL as XML representation.
 
 #### options 
 
