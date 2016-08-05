@@ -7,7 +7,7 @@ Currently there exist two XProc steps for requesting the GitHub API. They use pr
 
 ## Dependencies
 
-The GitHub API responds to HTTP requests with JSON messages. In order, the XProc steps rely on an XProc processor which is able to automatically convert the JSON provided by the API to an XML representation. XML Calabash use a proprietary extension named [transparentJSON](xmlcalabash.com/docs/reference/langext.html#ext.transparent-json) for this purpose.
+The GitHub API responds to HTTP requests with JSON messages. In order, the XProc steps rely on an XProc processor which is able to automatically convert the JSON provided by the API to an XML representation. [XML Calabash](http://xmlcalabash.com/) use a proprietary extension named [transparentJSON](xmlcalabash.com/docs/reference/langext.html#ext.transparent-json) for this purpose. [MorganaXProc](http://www.xml-project.com/) is currently not capable of exposing JSON as XML so we suggest to use XML Calabash. 
 
 ## Authentification
 
