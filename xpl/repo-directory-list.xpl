@@ -31,6 +31,8 @@
       by a repository query.
     </p:documentation>
   </p:option>
+  <p:option name="path" select="''"/>
+  <p:option name="depth" select="0"/>
   
   <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
   
@@ -41,7 +43,7 @@
     <p:with-option name="message" select="'[list] ', $contents-url"/>
   </cx:message>
   
-  <p:template>
+  <p:template name="create-request">
     <p:input port="template">
       <p:inline>
         <c:request href="{$contents-url}"
@@ -55,28 +57,55 @@
     <p:with-param name="contents-url" select="$contents-url"/>
   </p:template>
   
-  <p:http-request name="http-request"/>
+  <p:http-request name="http-request" cx:depends-on="create-request"/>
   
-  <p:add-attribute attribute-name="xml:base" match="/j:json">
+  <!-- create c:directory/c:file structure -->
+  
+  <p:rename match="/j:json/j:item[j:type eq 'file']" new-name="c:file"/>
+    
+  <p:rename match="/j:json/j:item[j:type eq 'dir']" new-name="c:directory"/>
+  
+  <p:viewport match="c:file">
+    <p:add-attribute match="c:file" attribute-name="name">
+      <p:with-option name="attribute-value" select="c:file/j:name"/>
+    </p:add-attribute>
+    <p:add-attribute match="c:file" attribute-name="url">
+      <p:with-option name="attribute-value" select="c:file/j:download_005furl"/>
+    </p:add-attribute>
+  </p:viewport>
+  
+  <p:viewport match="c:directory">
+    <p:add-attribute match="c:directory" attribute-name="name">
+      <p:with-option name="attribute-value" select="c:directory/j:name"/>
+    </p:add-attribute>
+  </p:viewport>
+  
+  <p:rename match="/j:json" new-name="c:directory"/>
+  
+  <p:add-attribute attribute-name="xml:base" match="/c:directory">
     <p:with-option name="attribute-value" select="$contents-url"/>
   </p:add-attribute>
   
-  <p:viewport match="/j:json/j:item[j:type eq 'dir']" name="viewport">
+  <p:add-attribute attribute-name="name" match="/c:directory">
+    <p:with-option name="attribute-value" 
+      select="if(xs:integer($depth) eq 0) 
+              then replace($contents-url, '^.+/(.+?)/contents$', '$1')
+              else c:directory/@name"/>
+  </p:add-attribute>
+  
+  <p:delete match="j:*|*/@type"/>
+  
+  <p:viewport match="/c:directory/c:directory" name="viewport">
     
     <tr:repo-directory-list name="recursive-repo-listing2">
       <p:with-option name="token" select="$token"/>
-      <p:with-option name="contents-url" select="concat($contents-url, '/', j:item/j:name)"/>      
+      <p:with-option name="contents-url" select="concat($contents-url, '/', c:directory/@name)"/>
+      <p:with-option name="path" select="if(xs:integer($depth) eq 0) 
+                                         then '' 
+                                         else c:directory/@name"/>
+      <p:with-option name="depth" select="xs:integer($depth) + 1"/>
     </tr:repo-directory-list>
-    
-    <p:insert cx:depends-on="recursive-repo-listing2" match="j:item" position="last-child">
-      <p:input port="source">
-        <p:pipe port="current" step="viewport"/>
-      </p:input>
-      <p:input port="insertion">
-        <p:pipe port="result" step="recursive-repo-listing2"/>
-      </p:input>
-    </p:insert>
-    
+        
   </p:viewport>
   
 </p:declare-step>
